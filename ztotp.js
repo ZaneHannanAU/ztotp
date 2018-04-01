@@ -110,8 +110,10 @@ const TOTP = {
 	getTOTPString,
 	verifyTOTP,
 	getValidity: verifyTOTP,
+	validate: verifyTOTP,
+	isValid: verifyTOTP,
 	readOut,
-	verifiableRange: new Set([0, -1, -2]),
+	verifiableRange: [0, -1, -2],
 	_31,
 	truncate
 };
