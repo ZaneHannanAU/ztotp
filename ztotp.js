@@ -57,8 +57,33 @@ const getTOTP = (secret, d = Date.now(), len = 6, alg = 'sha1', T0 = 0, TI = 30)
 	return TOTPValue;
 };
 
-const verifyTOTP = (input, secret, d = Date.now(), len = 6, alg = 'sha1', T0 = 0, TI = 30) => {
-	const value = Number.parseInt(
+
+const getTOTPShort = (s, len, alg) => getOTP(s, undefined, undefined, undefined, len, alg);
+const getTOTPString = (s, len, alg) => String(getTOTPShort(s, len, alg))
+	.padStart(len,'0');
+
+const getN = (...opt) => {
+	switch (opt.length) {
+		case 1: 
+			if (Buffer.isBuffer(opt[0])) {
+				return getOTP(opt[0]);
+			} else {
+				let {
+					secret, s = secret,
+					unixtime, d = unixtime,
+					digits, length = digits, len = length,
+					algorithm, digest = algorithm, alg = digest,
+					init, T0 = init,
+					period, steps = period, TI = steps
+				} = opt[0];
+				return getOTP(s, d, len, alg, T0, TI);
+			};
+		default: return getTOTP(...opt);
+	};
+};
+
+const verifyTOTP = (input, secret, range = TOTP.verifiableRange, d = Date.now(), len = 6, alg = 'sha1', T0 = 0, TI = 30) => {
+	const value = 'number' === typeof input ? input : Number.parseInt(
 		input.replace(/[,\._ -]/g,''),
 		10
 	);
@@ -72,48 +97,21 @@ const verifyTOTP = (input, secret, d = Date.now(), len = 6, alg = 'sha1', T0 = 0
 		TI
 	);
 
-	switch (value) {
-		case get(T0):
+	for (const diff of range)
+		if (get(T0 + diff * TI) === value)
 			return true;
-		case get(T0-TI):
-			return true;
-		case get(T0+TI):
-			return true;
-		case get(T0-2*TI):
-			return true;
-		default: return false;
-	};
+	return false;
 };
-
-const getTOTPString = (s, len, alg) => String(
-	getOTP(s, undefined, undefined, undefined, len, alg)
-).padStart(len,'0');
 
 const TOTP = {
 	getTOTP,
-	get(...opt) {
-		switch (opt.length) {
-			case 1: 
-				if (Buffer.isBuffer(opt[0])) {
-					return getOTP(opt[0]);
-				} else {
-					let {
-						secret, s = secret,
-						unixtime, d = unixtime,
-						length, len = length,
-						algorithm, digest = algorithm, alg = digest,
-						init, T0 = init,
-						steps, TI = steps
-					} = opt[0];
-					return getOTP(s, d, len, alg, T0, TI);
-				};
-			default: return getTOTP(...opt);
-		};
-	},
+	getTOTPShort,
+	get: getN,
 	getTOTPString,
 	verifyTOTP,
 	getValidity: verifyTOTP,
 	readOut,
+	verifiableRange: new Set([0, -1, -2]),
 	_31,
 	truncate
 };

@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/ZaneHannanAU/ztotp/issues"
   },
-  "homepage": "https://github.com/ZaneHannanAU/ztotp#readme"
+  "homepage": "https://github.com/ZaneHannanAU/ztotp#readme",
+  "dependencies": {
+    "buf-b32": "^1.0.1"
+  }
 }
