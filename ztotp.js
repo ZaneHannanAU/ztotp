@@ -62,6 +62,7 @@ const verifyTOTP = (input, secret, d = Date.now(), len = 6, alg = 'sha1', T0 = 0
 		input.replace(/[,\._ -]/g,''),
 		10
 	);
+
 	const get = (T_ = T0) => getTOTP(
 		secret,
 		d,
@@ -80,8 +81,6 @@ const verifyTOTP = (input, secret, d = Date.now(), len = 6, alg = 'sha1', T0 = 0
 			return true;
 		case get(T0-2*TI):
 			return true;
-		case get(T0+2*TI):
-			return true;
 		default: return false;
 	};
 };
@@ -92,7 +91,25 @@ const getTOTPString = (s, len, alg) => String(
 
 const TOTP = {
 	getTOTP,
-	get: getTOTP,
+	get(...opt) {
+		switch (opt.length) {
+			case 1: 
+				if (Buffer.isBuffer(opt[0])) {
+					return getOTP(opt[0]);
+				} else {
+					let {
+						secret, s = secret,
+						unixtime, d = unixtime,
+						length, len = length,
+						algorithm, digest = algorithm, alg = digest,
+						init, T0 = init,
+						steps, TI = steps
+					} = opt[0];
+					return getOTP(s, d, len, alg, T0, TI);
+				};
+			default: return getTOTP(...opt);
+		};
+	},
 	getTOTPString,
 	verifyTOTP,
 	getValidity: verifyTOTP,

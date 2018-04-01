@@ -1,0 +1,26 @@
+{
+  "name": "ztotp",
+  "version": "1.0.0",
+  "description": "zeen3 TOTP, using a readable Wikipedia style. Fast and buffer-reusing.",
+  "main": "ztotp.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ZaneHannanAU/ztotp.git"
+  },
+  "keywords": [
+    "totp",
+    "zeen3",
+    "wikipedia",
+    "readable",
+    "buffer"
+  ],
+  "author": "zeen3",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/ZaneHannanAU/ztotp/issues"
+  },
+  "homepage": "https://github.com/ZaneHannanAU/ztotp#readme"
+}
