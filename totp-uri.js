@@ -32,8 +32,7 @@ const toURILong = (key, keyEnc, acc, iss, len, alg, T0, TI) => {
 	;;
 
 	switch (keyEnc) {
-		default:
-			key = Buffer.from(key, keyEnc);
+		default: key = Buffer.from(key, keyEnc);
 		case null:
 		case 'bin':
 			sp.set(
@@ -44,20 +43,18 @@ const toURILong = (key, keyEnc, acc, iss, len, alg, T0, TI) => {
 			);
 			break;
 		case 'base32':
-			sp.set(
-				'secret',
-				String(key)
-			);
+			sp.set('secret',String(key));
 			break;
 	};
-	sp.set('issuer', String(iss))
-	sp.set('account', String(acc))
-	sp.set('algorithm', String(alg).toUpperCase())
-	sp.set('period', String(period))
-	return uri.toString()
+	sp.set('issuer', String(iss));
+	sp.set('account', String(acc));
+	sp.set('algorithm', String(alg).toUpperCase());
+	sp.set('period', String(period));
+	return uri.toString();
 };
 
-module.exports = toURI
-module.exports.encSecret = encSecret
-module.exports.baseURI = baseURI
+module.exports = toURI;
+module.exports.toURILong = toURILong;
+module.exports.encSecret = encSecret;
+module.exports.baseURI = baseURI;
 

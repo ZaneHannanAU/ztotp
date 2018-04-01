@@ -112,6 +112,8 @@ const TOTP = {
 	getValidity: verifyTOTP,
 	validate: verifyTOTP,
 	isValid: verifyTOTP,
+	uri: require('./totp-uri'),
+	toURI: require('./totp-uri'),
 	readOut,
 	verifiableRange: [0, -1, -2],
 	_31,
