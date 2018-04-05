@@ -1,6 +1,6 @@
 {
   "name": "ztotp",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "zeen3 TOTP, using a readable Wikipedia style. Fast and buffer-reusing.",
   "main": "ztotp.js",
   "scripts": {
