@@ -117,6 +117,7 @@ const TOTP = {
 	toURI: require('./totp-uri'),
 	readOut,
 	verifiableRange: [0, -1, -2],
+	ms,
 	_31,
 	truncate
 };
