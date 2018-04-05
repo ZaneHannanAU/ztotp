@@ -1,6 +1,7 @@
 const crypto = require('crypto')
 const testing = String(process.env.ENVIRONMENT).toLowerCase().startsWith('test')
 
+const ms = 1e3;
 const _31 = Math.pow(2,31)-1;
 const truncate = Array.from({length: 12}, (_,i)=>Math.pow(10,i));
 // shorthand to fill crap
@@ -42,7 +43,7 @@ const readOut = (()=>{
  * @returns {number} a 32 bit signed positive integer.
  */
 const getTOTP = (secret, d = Date.now(), len = 6, alg = 'sha1', T0 = 0, TI = 30) => {
-	const TC = Math.floor((Math.floor(d / 1e3) - T0) / TI)
+	const TC = Math.floor((d - T0 * ms) / (ms * TI))
 		.toString(16)
 		.padStart(16, '0');
 

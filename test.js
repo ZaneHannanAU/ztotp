@@ -1,4 +1,4 @@
-const totp = require('./totp');
+const totp = require('./ztotp');
 const util = require('util');
 console.dir(totp, {colors: true})
 
@@ -14,7 +14,8 @@ const test_keys = (()=>{
 console.log('test secrets are:');
 for (const a in test_keys)
 	console.log(
-		'  %s\n  (0x%s)',
+		'  %s%s\n   (0x%s)',
+		(a+':').padEnd(8),
 		test_keys[a],
 		test_keys[a].toString('hex')
 	);
@@ -50,7 +51,8 @@ const test_expect = {
 const ctx = {
 	[util.inspect.custom](d,o) {
 		const eq = this.otp === this.exp ? 'string' : 'regexp'
-		return o.stylize(`totp(test, ${this.d}, 8, ${this.alg}) = ${this.otp}; expected ${this.exp}`, eq)
+		const D = new Date(this.d)
+		return o.stylize(`ztotp(test_keys.${(this.alg+',').padEnd(7)} ${this.d.toString().padStart(14)} /*${D.toUTCString()}*/, 8, ${JSON.stringify(this.alg).padStart(8)}) === ${this.otp};// expected ${this.exp}`, eq)
 	},
 	create(d, alg, otp, exp, len = 8) {
 		const CTX = Object.create(ctx);
