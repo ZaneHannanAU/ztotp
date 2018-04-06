@@ -1,6 +1,7 @@
 const crypto = require('crypto')
 const testing = String(process.env.ENVIRONMENT).toLowerCase().startsWith('test')
 
+const verifiableRanges = Array.from({length:13},($,d)=>Array.from({length:d+1},(_,i)=>-i))
 const ms = 1e3;
 const _31 = Math.pow(2,31)-1;
 const truncate = Array.from({length: 12}, (_,i)=>Math.pow(10,i));
@@ -85,9 +86,12 @@ const getN = (...opt) => {
 
 const verifyTOTP = (input, secret, range = TOTP.verifiableRange, d = Date.now(), len = 6, alg = 'sha1', T0 = 0, TI = 30) => {
 	const value = 'number' === typeof input ? input : Number.parseInt(
-		input.replace(/[,\._ -]/g,''),
+		input.replace(/\D+/g,''),
 		10
 	);
+	const verifiable = Array.isArray(range)
+		? range
+		: verifiableRanges[range];
 
 	const get = (T_ = T0) => getTOTP(
 		secret,
@@ -98,7 +102,7 @@ const verifyTOTP = (input, secret, range = TOTP.verifiableRange, d = Date.now(),
 		TI
 	);
 
-	for (const diff of range)
+	for (const diff of verifiable)
 		if (get(T0 + diff * TI) === value)
 			return true;
 	return false;
@@ -115,8 +119,10 @@ const TOTP = {
 	isValid: verifyTOTP,
 	uri: require('./totp-uri'),
 	toURI: require('./totp-uri'),
+	toOTPAuthURI: require('./totp-uri'),
 	readOut,
-	verifiableRange: [0, -1, -2],
+	verifiableRanges,
+	verifiableRange: verifiableRanges[2],
 	ms,
 	_31,
 	truncate

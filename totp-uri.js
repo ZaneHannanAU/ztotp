@@ -10,12 +10,12 @@ const encSecret = buf => {
 };
 
 const toURI = ({
-	key, keyEnc,
+	secret, key = secret, keyEnc = null,
 	name = 'ERRACCOUNTNAMEGOESHERE', account = name,
 	service = 'ERRSERVICEISSUERGOESHERE', issuer = service,
 	length = 6, len = length, digits = len,
 	digest = 'sha1', alg = digest, algorithm,
-	init = 0, T0 = init,
+	init = 0, epoch = init, T0 = epoch,
 	steps = 30, TI = steps, period = TI
 }) => toURILong(key, keyEnc, account, issuer, digits, algorithm, T0, period)
 
