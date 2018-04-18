@@ -60,7 +60,7 @@ const getTOTP = (secret, d = Date.now(), len = 6, alg = 'sha1', T0 = 0, TI = 30)
 };
 
 
-const getTOTPShort = (s, len, alg) => getOTP(s, undefined, len, alg);
+const getTOTPShort = (s, len, alg) => getTOTP(s, undefined, len, alg);
 const getTOTPString = (s, len, alg) => String(getTOTPShort(s, len, alg))
 	.padStart(len,'0');
 
