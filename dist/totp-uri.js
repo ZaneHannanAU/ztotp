@@ -3,18 +3,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const url_1 = require("url");
 const buf_b32_1 = require("buf-b32");
 const baseURI = 'otpauth://totp/';
+exports.baseURI = baseURI;
 let warning_alg = 0, warning_epo = 0, warning_dig = 0, warning_per = 0;
-exports.encSecret = (buf) => buf_b32_1.encode(buf, true)
+const encSecret = (buf) => buf_b32_1.encode(buf, true)
     .replace(/=+/g, '');
+exports.encSecret = encSecret;
 function toURILong(key, keyEnc = 'buffer', acc = 'ERRACCOUTNAMEGOESHERE', iss = 'ERRSERVICEISSUERGOESHERE', len = 6, alg = 'sha1', T0 = 0, TI = 30) {
     const uri = new url_1.URL(baseURI + acc + ':' + iss), sp = uri.searchParams;
     switch (keyEnc) {
         case 'buffer':
             sp.set('secret', Buffer.isBuffer(key)
-                ? exports.encSecret(key)
+                ? encSecret(key)
                 : 'string' === typeof key
                     ? key
-                    : exports.encSecret(key));
+                    : encSecret(key));
             break;
         case 'string':
         case 'base32':
@@ -39,6 +41,9 @@ function toURILong(key, keyEnc = 'buffer', acc = 'ERRACCOUTNAMEGOESHERE', iss = 
     return uri.toString();
 }
 exports.toURILong = toURILong;
-exports.toURI = ({ secret, secretEnc = 'string' === typeof secret ? 'string' : 'buffer', name = 'ERRACCOUNTNAMEGOESHERE', issuer = 'ERRSERVICEISSUERGOESHERE', length = 6, digits = length, len = digits, algorithm = 'sha1', digest = algorithm, alg = digest, epoch = 0, init = epoch, T0 = init, period = 30, steps = period, TI = steps }) => toURILong(secret, secretEnc, name, issuer, len, alg, T0, TI);
-exports.default = exports.toURI;
+exports.toOTPAuthURILong = toURILong;
+const toURI = ({ secret, secretEnc = 'string' === typeof secret ? 'string' : 'buffer', name = 'ERRACCOUNTNAMEGOESHERE', issuer = 'ERRSERVICEISSUERGOESHERE', length = 6, digits = length, len = digits, algorithm = 'sha1', digest = algorithm, alg = digest, epoch = 0, init = epoch, T0 = init, period = 30, steps = period, TI = steps }) => toURILong(secret, secretEnc, name, issuer, len, alg, T0, TI);
+exports.toURI = toURI;
+exports.toOTPAuthURI = toURI;
+exports.default = toURI;
 //# sourceMappingURL=totp-uri.js.map

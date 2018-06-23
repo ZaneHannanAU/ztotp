@@ -38,7 +38,7 @@ toURI({secret: testKeys.sha256, alg: 'sha256', length: 8, period: 31, epoch: 1})
 // definitely emit all the warnings
 for (const alg in testExpect) {
 	console.log(
-		'testing TOTP using %s, using secret of %d byte length (%s)\n  <0x%s>',
+		'testing TOTP using %s, using secret of %d byte length (%s)\n  secret as hex: <0x%s>',
 		alg,
 		testKeys[alg].byteLength,
 		testKeys[alg].toString('ascii'),

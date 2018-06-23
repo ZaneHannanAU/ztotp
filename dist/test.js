@@ -35,7 +35,7 @@ const testExpect = {
 };
 ztotp_1.toURI({ secret: testKeys.sha256, alg: 'sha256', length: 8, period: 31, epoch: 1 });
 for (const alg in testExpect) {
-    console.log('testing TOTP using %s, using secret of %d byte length (%s)\n  <0x%s>', alg, testKeys[alg].byteLength, testKeys[alg].toString('ascii'), testKeys[alg].toString('hex'));
+    console.log('testing TOTP using %s, using secret of %d byte length (%s)\n  secret as hex: <0x%s>', alg, testKeys[alg].byteLength, testKeys[alg].toString('ascii'), testKeys[alg].toString('hex'));
     for (const unixtime in testExpect[alg]) {
         const expected = testExpect[alg][unixtime];
         const datetime = +unixtime * 1000;

@@ -3,10 +3,10 @@ import { encode } from 'buf-b32'
 const baseURI = 'otpauth://totp/'
 let warning_alg = 0, warning_epo = 0, warning_dig = 0, warning_per = 0
 
-export const encSecret = (buf:ArrayBufferView):string => encode(buf, true)
+const encSecret = (buf:ArrayBufferView):string => encode(buf, true)
 	.replace(/=+/g, '')
 
-export function toURILong (
+function toURILong (
 	key: ArrayBufferView | string,
 	keyEnc:string = 'buffer',
 	acc:string = 'ERRACCOUTNAMEGOESHERE',
@@ -73,7 +73,7 @@ interface TOTP_URI_Options {
 	TI?: number;
 }
 
-export const toURI = ({
+const toURI = ({
 	secret,
 	secretEnc = 'string' === typeof secret ? 'string' : 'buffer',
 	name = 'ERRACCOUNTNAMEGOESHERE',
@@ -84,3 +84,13 @@ export const toURI = ({
 	period = 30, steps = period, TI = steps
 }:TOTP_URI_Options):string => toURILong(secret, secretEnc, name, issuer, len, alg, T0, TI)
 export default toURI
+export {
+	toURI,
+	toURI as toOTPAuthURI,
+	toURILong,
+	toURILong as toOTPAuthURILong,
+	encSecret,
+	baseURI,
+	TOTP_URI_Options
+}
+
