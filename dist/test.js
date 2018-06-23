@@ -33,6 +33,7 @@ const testExpect = {
         '20000000000': 47863826
     }
 };
+ztotp_1.toURI({ secret: testKeys.sha256, alg: 'sha256', length: 8, period: 31, epoch: 1 });
 for (const alg in testExpect) {
     console.log('testing TOTP using %s, using secret of %d byte length (%s)\n  <0x%s>', alg, testKeys[alg].byteLength, testKeys[alg].toString('ascii'), testKeys[alg].toString('hex'));
     for (const unixtime in testExpect[alg]) {
@@ -43,5 +44,6 @@ for (const alg in testExpect) {
         if (totp === expected)
             console.log('  test passed: getTOTP(testKeys.%s, %d /*%s*/, %d, %s) === %d \u2705', alg, datetime, new Date(datetime).toUTCString(), 8, alg, expected);
     }
+    console.log('URI test: %s', ztotp_1.toURI({ secret: testKeys[alg], alg: alg, length: 8 }));
 }
 //# sourceMappingURL=test.js.map

@@ -1,4 +1,4 @@
-import { getTOTP } from './ztotp'
+import { getTOTP, toURI } from './ztotp'
 
 const sha512key = Buffer.allocUnsafe(64).fill('1234567890')
 const testKeys:{sha1: Buffer; sha256: Buffer; sha512: Buffer; [key: string]: Buffer} = {
@@ -34,6 +34,8 @@ const testExpect:{[alg: string]: {[unixtime: number]: number}} = {
 	}
 }
 
+toURI({secret: testKeys.sha256, alg: 'sha256', length: 8, period: 31, epoch: 1})
+// definitely emit all the warnings
 for (const alg in testExpect) {
 	console.log(
 		'testing TOTP using %s, using secret of %d byte length (%s)\n  <0x%s>',
@@ -61,5 +63,5 @@ for (const alg in testExpect) {
 			expected
 		)
 	}
+	console.log('URI test: %s', toURI({secret: testKeys[alg], alg: alg, length: 8}))
 }
-
