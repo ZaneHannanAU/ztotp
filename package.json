@@ -2,9 +2,10 @@
   "name": "ztotp",
   "version": "2.1.1",
   "description": "zeen3 TOTP, using a readable Wikipedia style. Fast and buffer-reusing.",
-  "main": "ztotp.js",
+  "main": "dist/ztotp.js",
+  "types": "dist/ztotp.d.ts",
   "scripts": {
-    "test": "node test.js"
+    "test": "node dist/test.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,6 @@
   },
   "homepage": "https://github.com/ZaneHannanAU/ztotp#readme",
   "dependencies": {
-    "buf-b32": "^1.0.1"
+    "buf-b32": "^2.0.4"
   }
 }
